@@ -23,10 +23,6 @@ class App {
     });
   }
 
-  public getServer() {
-    return this.app;
-  }
-
   private initializeMiddlewares() {
     this.app.use(bodyParser.json());
     this.app.use(cookieParser());
@@ -48,7 +44,7 @@ class App {
       MONGO_PASSWORD,
       MONGO_PATH,
     } = process.env;
-    mongoose.connect(`mongodb://${MONGO_USER}:${MONGO_PASSWORD}${MONGO_PATH}`);
+    mongoose.connect(`mongodb+srv://${MONGO_USER}:${MONGO_PASSWORD}${MONGO_PATH}`);
   }
 }
 
