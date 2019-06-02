@@ -14,7 +14,7 @@ class PostsController implements Controller {
   private post = postModel;
 
   constructor() {
-      this.initializeRoutes();
+    this.initializeRoutes();
   }
 
   private initializeRoutes() {
@@ -59,18 +59,18 @@ class PostsController implements Controller {
         });
   }
 
-    private createPost = async (request: RequestWithUser, response: express.Response) => {
-        const postData: CreatePostDto = request.body;
-        const createdPost = new this.post({
-            ...postData,
-            author: request.user._id,
-        });
-        const savedPost = await createdPost.save();
-        await savedPost.populate('author', '-password').execPopulate();
-        response.send(savedPost);
-    }
+  private createPost = async (request: RequestWithUser, response: express.Response) => {
+    const postData: CreatePostDto = request.body;
+    const createdPost = new this.post({
+      ...postData,
+      author: request.user._id,
+    });
+    const savedPost = await createdPost.save();
+    await savedPost.populate('author', '-password').execPopulate();
+    response.send(savedPost);
+  }
 
-  private deletePost = (request: express.Request, response: express.Response) => {
+  private deletePost = async (request: express.Request, response: express.Response, next: express.NextFunction) => {
     const id = request.params.id;
     this.post.findByIdAndDelete(id)
         .then((successResponse) => {

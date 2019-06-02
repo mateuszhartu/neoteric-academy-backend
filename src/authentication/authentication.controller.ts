@@ -48,24 +48,6 @@ class AuthenticationController implements Controller {
     }
   }
 
-  // private loggingIn = async (request: express.Request, response: express.Response, next: express.NextFunction) => {
-  //   const logInData: LogInDto = request.body;
-  //   const user = await this.user.findOne({ email: logInData.email });
-  //   if (user) {
-  //     const isPasswordMatching = await bcrypt.compare(logInData.password, user.password);
-  //     if (isPasswordMatching) {
-  //       user.password = undefined;
-  //       const tokenData = this.authenticationService.createToken(user);
-  //       const userData = {user: user, token: tokenData};
-  //       response.send(userData);
-  //     } else {
-  //       next(new WrongCredentialsException());
-  //     }
-  //   } else {
-  //     next(new WrongCredentialsException());
-  //   }
-  // }
-
   private loggingIn = async (request: express.Request, response: express.Response, next: express.NextFunction) => {
     const logInData: LogInDto = request.body;
     const user = await this.user.findOne({ email: logInData.email });
