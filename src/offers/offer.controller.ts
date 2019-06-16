@@ -25,6 +25,10 @@ class OfferController implements Controller {
         });
   }
 
+  private getOffers = (request: express.Request, response: express.Response) => {
+
+  }
+
   private createOffer = async (request: RequestWithUser, response: express.Response) => {
     const offerData = request.body;
     const createdOffer = new this.offer({

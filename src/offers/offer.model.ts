@@ -10,12 +10,13 @@ const offerSchema = new mongoose.Schema({
   companyName: String,
   city: String,
   technology: String,
+  expLvl: String,
   salary: { min: Number, max: Number },
   imagePath: String,
   lat: Number,
   lng: Number,
   details: String,
-  requirement: String,
+  requirements: String,
   skills: [],
 });
 

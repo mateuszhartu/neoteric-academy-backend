@@ -4,7 +4,7 @@ import PostController from './post/post.controller';
 import validateEnv from './utils/validateEnv';
 import UserController from './user/user.controller';
 import AuthenticationController from './authentication/authentication.controller';
-import OfferController from "./offers/offer.controller";
+import OfferController from './offers/offer.controller';
 
 validateEnv();
 
