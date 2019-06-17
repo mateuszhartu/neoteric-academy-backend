@@ -3,6 +3,8 @@ import Controller from '../interfaces/controller.interface';
 import offerModel from './offer.model';
 import authMiddleware from '../middleware/auth.middleware';
 import RequestWithUser from '../interfaces/requestWithUser.interface';
+import { FilterData } from '../interfaces/filterData.interface';
+import { Param } from './enums';
 
 class OfferController implements Controller {
   public path = '/offers';
@@ -19,14 +21,25 @@ class OfferController implements Controller {
   }
 
   private getAllOffers = (request: express.Request, response: express.Response) => {
-    this.offer.find()
+    let filterParams: string[] = request.body;
+    let filterdata: FilterData = {};
+    return request.body;
+    if (filterParams[Param.city] !== 'All'){
+      filterdata['city'] = filterParams[Param.city];
+    }
+    if (filterParams[Param.technology] !== 'All'){
+      filterdata['technology'] = filterParams[Param.technology];
+    }
+    if (filterParams[Param.experience] !== 'All'){
+      filterdata['experience'] = filterParams[Param.experience];
+    }
+    if (filterParams[Param.salary] !== 'All'){
+      filterdata['salary.min'] = { $gte: +filterParams[Param.salary] };
+    }
+    this.offer.find(filterdata)
         .then((offers) => {
           response.send(offers);
         });
-  }
-
-  private getOffers = (request: express.Request, response: express.Response) => {
-
   }
 
   private createOffer = async (request: RequestWithUser, response: express.Response) => {
