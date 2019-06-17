@@ -14,9 +14,7 @@
     "express": "^4.16.4",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "5.4.2",
-    "ts-node": "^7.0.1"
-  },
-  "devDependencies": {
+    "ts-node": "^7.0.1",
     "@types/bcrypt": "^3.0.0",
     "@types/cookie-parser": "^1.4.1",
     "@types/express": "^4.16.0",
@@ -34,6 +32,8 @@
     "tslint": "^5.11.0",
     "tslint-config-airbnb": "^5.11.1",
     "typescript": "^3.2.1"
+  },
+  "devDependencies": {
   },
   "scripts": {
     "dev": "ts-node ./src/server.ts",
