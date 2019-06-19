@@ -18,6 +18,8 @@ const offerSchema = new mongoose.Schema({
   details: String,
   requirements: String,
   skills: [],
+  date: Date,
+  markerAnimation: String,
 });
 
 const offerModel = mongoose.model<Offer & mongoose.Document>('Offer', offerSchema);

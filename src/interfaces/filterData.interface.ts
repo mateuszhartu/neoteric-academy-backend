@@ -1,6 +1,6 @@
 export interface FilterData {
   'city'?: string;
   'technology'?: string;
-  'experience'?: string;
+  'expLvl'?: string;
   'salary.min'?: {};
 }

@@ -5,6 +5,11 @@ import authMiddleware from '../middleware/auth.middleware';
 import RequestWithUser from '../interfaces/requestWithUser.interface';
 import { FilterData } from '../interfaces/filterData.interface';
 import { Param } from './enums';
+import * as moment from 'moment';
+import PostNotFoundException from '../exceptions/PostNotFoundException';
+import Offer from './offer.interface';
+import validationMiddleware from '../middleware/validation.middleware';
+import CreateOfferDto from './offer.dto';
 
 class OfferController implements Controller {
   public path = '/offers';
@@ -16,24 +21,26 @@ class OfferController implements Controller {
   }
 
   private initializeRoutes() {
-    this.router.get(this.path, this.getAllOffers);
-    this.router.post(this.path, authMiddleware, this.createOffer);
+    this.router.post(this.path, this.getAllOffers);
+    this.router.post(`${this.path}/new`, authMiddleware, this.createOffer);
+    this.router
+        .patch(`${this.path}/:id`, validationMiddleware(CreateOfferDto, true), this.updateOffer)
+        .delete(`${this.path}/:id`, this.deleteOffer);
   }
 
   private getAllOffers = (request: express.Request, response: express.Response) => {
     let filterParams: string[] = request.body;
     let filterdata: FilterData = {};
-    return request.body;
-    if (filterParams[Param.city] !== 'All'){
-      filterdata['city'] = filterParams[Param.city];
+    if (filterParams[Param.city] !== 'All') {
+      filterdata.city = filterParams[Param.city];
     }
-    if (filterParams[Param.technology] !== 'All'){
-      filterdata['technology'] = filterParams[Param.technology];
+    if (filterParams[Param.technology] !== 'All') {
+      filterdata.technology = filterParams[Param.technology];
     }
-    if (filterParams[Param.experience] !== 'All'){
-      filterdata['experience'] = filterParams[Param.experience];
+    if (filterParams[Param.expLvl] !== 'All') {
+      filterdata.expLvl = filterParams[Param.expLvl];
     }
-    if (filterParams[Param.salary] !== 'All'){
+    if (filterParams[Param.salary] !== '0'){
       filterdata['salary.min'] = { $gte: +filterParams[Param.salary] };
     }
     this.offer.find(filterdata)
@@ -47,10 +54,37 @@ class OfferController implements Controller {
     const createdOffer = new this.offer({
       ...offerData,
       author: request.user._id,
+      date: moment().format(),
+      markerAnimation: '',
     });
     const savedOffer = await createdOffer.save();
     await savedOffer.populate('author', '-password').execPopulate();
     response.send(savedOffer);
+  }
+
+  private deleteOffer = async (request: express.Request, response: express.Response, next: express.NextFunction) => {
+    const id = request.params.id;
+    this.offer.findByIdAndDelete(id)
+            .then((successResponse) => {
+              if (successResponse) {
+                response.send(200);
+              } else {
+                response.send(404);
+              }
+            });
+  }
+
+  private updateOffer = (request: express.Request, response: express.Response, next: express.NextFunction) => {
+    const id = request.params.id;
+    const offerData: Offer = request.body;
+    this.offer.findByIdAndUpdate(id, offerData, { new: true })
+        .then((post) => {
+          if (post) {
+            response.send(post);
+          } else {
+            next(new PostNotFoundException(id));
+          }
+        });
   }
 }
 

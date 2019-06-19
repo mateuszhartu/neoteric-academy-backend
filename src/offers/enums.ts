@@ -1,6 +1,6 @@
 export enum Param {
     city,
     technology,
-    experience,
+    expLvl,
     salary,
 }
