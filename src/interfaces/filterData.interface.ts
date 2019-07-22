@@ -3,4 +3,6 @@ export interface FilterData {
   'technology'?: string;
   'expLvl'?: string;
   'salary.min'?: {};
+  'salary.max'?: {};
+
 }

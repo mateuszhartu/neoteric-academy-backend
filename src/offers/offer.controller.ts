@@ -40,8 +40,11 @@ class OfferController implements Controller {
     if (filterParams[Param.expLvl] !== 'All') {
       filterdata.expLvl = filterParams[Param.expLvl];
     }
-    if (filterParams[Param.salary] !== '0'){
-      filterdata['salary.min'] = { $gte: +filterParams[Param.salary] };
+    if (filterParams[Param.salaryMin] !== '0') {
+      filterdata['salary.min'] = { $gte: +filterParams[Param.salaryMin] };
+    }
+    if (filterParams[Param.salaryMax] !== '0') {
+      filterdata['salary.max'] = { $lte: +filterParams[Param.salaryMax] };
     }
     this.offer.find(filterdata)
         .then((offers) => {
